@@ -1,31 +1,2287 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Architecture Academy</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHI ACADEMY — Kuasai Arsitektur dalam 2 Bulan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1219;
+    --bg3: #141820;
+    --gold: #c9a84c;
+    --gold2: #e8c96d;
+    --white: #f0ede8;
+    --muted: #6b7280;
+    --accent: #4a90d9;
+    --green: #4ecb71;
+    --red: #e05252;
+    --border: rgba(201,168,76,0.2);
+    --border2: rgba(240,237,232,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    opacity: 0.5;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--white); }
+  nav ul { display: flex; gap: 36px; list-style: none; }
+  nav ul li a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  nav ul li a:hover { color: var(--gold); }
+  .nav-progress {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 120px 48px 80px;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .hero-bg-arc {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 50%;
+    animation: rotate 60s linear infinite;
+  }
+  .hero-bg-arc::after {
+    content: '';
+    position: absolute;
+    top: 60px; left: 60px; right: 60px; bottom: 60px;
+    border: 1px solid rgba(201,168,76,0.06);
+    border-radius: 50%;
+  }
+  .hero-bg-arc::before {
+    content: '';
+    position: absolute;
+    top: 120px; left: 120px; right: 120px; bottom: 120px;
+    border: 1px solid rgba(201,168,76,0.05);
+    border-radius: 50%;
+  }
+  @keyframes rotate { to { transform: rotate(360deg); } }
+
+  .hero-content { max-width: 900px; z-index: 2; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 32px;
+  }
+  .hero-tag::before {
+    content: '▶';
+    font-size: 8px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    line-height: 1.0;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero h1 .outline {
+    -webkit-text-stroke: 1px rgba(240,237,232,0.3);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 18px; font-weight: 300; color: var(--muted);
+    max-width: 600px; line-height: 1.7; margin-bottom: 48px;
+    margin-top: 24px;
+  }
+  .hero-stats {
+    display: flex; gap: 48px; margin-bottom: 56px;
+    flex-wrap: wrap;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px; font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .hero-cta {
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bg);
+    padding: 16px 36px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    border: none; cursor: none; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.3s; font-weight: 500;
+  }
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    padding: 16px 36px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    border: 1px solid var(--border2); cursor: none; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  .scroll-indicator span {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+  }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(var(--gold), transparent); }
+
+  /* SECTION BASE */
+  section {
+    position: relative; z-index: 1;
+    padding: 100px 48px;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: var(--gold); opacity: 0.4;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-desc {
+    color: var(--muted); font-size: 16px; line-height: 1.8;
+    max-width: 640px; margin-bottom: 64px;
+  }
+
+  /* ABOUT / SKILLS NEEDED */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+  }
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    padding: 36px;
+    transition: all 0.4s;
+    position: relative; overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .skill-card:hover { background: var(--bg3); transform: translateY(-4px); }
+  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-icon {
+    font-size: 32px; margin-bottom: 20px; display: block;
+  }
+  .skill-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .skill-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .skill-level {
+    margin-top: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    color: var(--gold); text-transform: uppercase;
+  }
+
+  /* ROADMAP / TIMELINE */
+  #roadmap { background: var(--bg2); }
+  .week-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 48px;
+  }
+  .week-tab {
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--muted); cursor: none; transition: all 0.3s;
+  }
+  .week-tab:hover, .week-tab.active {
+    background: var(--gold); color: var(--bg);
+    border-color: var(--gold);
+  }
+  .week-content { display: none; }
+  .week-content.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .week-header {
+    display: flex; align-items: flex-start; gap: 40px;
+    margin-bottom: 40px; flex-wrap: wrap;
+  }
+  .week-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.3);
+    line-height: 1; flex-shrink: 0;
+  }
+  .week-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700; margin-bottom: 8px;
+  }
+  .week-info h2 em { color: var(--gold); font-style: italic; }
+  .week-info p { color: var(--muted); font-size: 15px; line-height: 1.7; max-width: 600px; }
+  .week-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--gold); letter-spacing: 1px; margin-top: 12px;
+  }
+
+  .topics-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px; margin-bottom: 40px;
+  }
+  .topic-card {
+    background: var(--bg); border: 1px solid var(--border2);
+    padding: 28px; border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .topic-card:hover { border-color: var(--gold); }
+  .topic-num {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--gold); margin-bottom: 12px; letter-spacing: 1px;
+  }
+  .topic-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .topic-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .topic-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+  .tag {
+    padding: 3px 10px; font-size: 10px; letter-spacing: 1px;
+    font-family: 'DM Mono', monospace; text-transform: uppercase;
+    border-radius: 2px;
+  }
+  .tag-theory { background: rgba(74,144,217,0.15); color: var(--accent); border: 1px solid rgba(74,144,217,0.3); }
+  .tag-practice { background: rgba(78,203,113,0.12); color: var(--green); border: 1px solid rgba(78,203,113,0.3); }
+  .tag-project { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .tag-software { background: rgba(224,82,82,0.12); color: var(--red); border: 1px solid rgba(224,82,82,0.3); }
+
+  .daily-schedule {
+    background: var(--bg); border: 1px solid var(--border2); padding: 28px;
+  }
+  .daily-schedule h3 {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .schedule-row {
+    display: flex; align-items: center; gap: 20px;
+    padding: 12px 0; border-bottom: 1px solid var(--border2);
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .sch-time {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--gold); min-width: 120px; flex-shrink: 0;
+  }
+  .sch-bar {
+    flex: 1; height: 6px; background: var(--bg2);
+    border-radius: 1px; overflow: hidden;
+  }
+  .sch-fill {
+    height: 100%; border-radius: 1px;
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+  }
+  .sch-label { font-size: 13px; color: var(--white); flex-shrink: 0; }
+
+  /* MATERIALS */
+  .materials-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 48px;
+  }
+  .mat-tab {
+    padding: 10px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--muted); cursor: none; transition: all 0.3s;
+  }
+  .mat-tab:hover, .mat-tab.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(74,144,217,0.08);
+  }
+  .mat-content { display: none; }
+  .mat-content.active { display: grid; animation: fadeIn 0.4s ease; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .resource-card {
+    background: var(--bg2); border: 1px solid var(--border2);
+    padding: 28px; transition: all 0.3s; position: relative;
+  }
+  .resource-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .resource-type {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .resource-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .resource-card .author { font-size: 13px; color: var(--gold); margin-bottom: 10px; }
+  .resource-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .resource-rating {
+    margin-top: 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .stars { color: var(--gold); font-size: 13px; }
+  .resource-rating span { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .resource-free {
+    position: absolute; top: 16px; right: 16px;
+    padding: 3px 8px; font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+    background: rgba(78,203,113,0.15); color: var(--green);
+    border: 1px solid rgba(78,203,113,0.3);
+  }
+
+  /* SOFTWARE TOOLS */
+  #tools { background: var(--bg2); }
+  .tools-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .tool-card {
+    background: var(--bg); border: 1px solid var(--border2);
+    padding: 28px; text-align: center; transition: all 0.4s;
+  }
+  .tool-card:hover { border-color: var(--gold); background: var(--bg3); }
+  .tool-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+  .tool-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .tool-card p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+  .tool-priority {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 12px;
+  }
+  .priority-essential { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .priority-important { background: rgba(74,144,217,0.12); color: var(--accent); border: 1px solid rgba(74,144,217,0.3); }
+  .priority-optional { background: rgba(107,114,128,0.15); color: var(--muted); border: 1px solid rgba(107,114,128,0.3); }
+  .tool-weeks { font-size: 11px; color: var(--muted); margin-top: 8px; font-family: 'DM Mono', monospace; }
+
+  /* PROJECTS */
+  .projects-timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  .projects-timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(var(--gold), transparent);
+  }
+  .project-item {
+    position: relative;
+    padding-bottom: 48px;
+    padding-left: 48px;
+  }
+  .project-item::before {
+    content: '';
+    position: absolute; left: -5px; top: 8px;
+    width: 10px; height: 10px;
+    background: var(--gold); border-radius: 50%;
+  }
+  .project-item::after {
+    content: '';
+    position: absolute; left: -20px; top: 8px;
+    width: 24px; height: 1px;
+    background: var(--gold);
+  }
+  .project-week {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; color: var(--gold); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .project-card {
+    background: var(--bg2); border: 1px solid var(--border2);
+    padding: 28px; transition: all 0.3s;
+  }
+  .project-card:hover { border-color: var(--gold); }
+  .project-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; margin-bottom: 10px;
+  }
+  .project-card h3 em { color: var(--gold); font-style: italic; }
+  .project-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .project-deliverables {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .deliverable {
+    padding: 4px 12px; font-size: 11px;
+    border: 1px solid var(--border2); color: var(--white);
+    font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
+  }
+  .project-difficulty {
+    display: flex; align-items: center; gap: 8px; margin-top: 16px;
+  }
+  .diff-bar { display: flex; gap: 3px; }
+  .diff-dot { width: 8px; height: 8px; border-radius: 1px; }
+  .diff-dot.filled { background: var(--gold); }
+  .diff-dot.empty { background: var(--border2); }
+  .diff-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+
+  /* TRACKER */
+  #tracker { background: var(--bg); }
+  .tracker-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+  .tracker-left { }
+  .tracker-right { }
+  .progress-item {
+    margin-bottom: 24px;
+  }
+  .progress-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-name { font-size: 14px; font-weight: 500; }
+  .progress-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; color: var(--gold);
+  }
+  .progress-bar {
+    height: 4px; background: var(--bg2); border-radius: 1px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 1px;
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+    transition: width 1.5s ease;
+    width: 0;
+  }
+
+  .checklist-section h3 {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .checklist-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border2);
+    cursor: none; transition: all 0.2s;
+  }
+  .checklist-item:hover { padding-left: 4px; }
+  .check-box {
+    width: 20px; height: 20px; flex-shrink: 0;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s; margin-top: 1px;
+  }
+  .checklist-item.done .check-box {
+    background: var(--gold); border-color: var(--gold);
+    color: var(--bg); font-size: 12px;
+  }
+  .checklist-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+  .check-text { font-size: 14px; line-height: 1.5; }
+
+  /* TIPS */
+  #tips { background: var(--bg2); }
+  .tips-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .tip-card {
+    background: var(--bg); border: 1px solid var(--border2);
+    padding: 32px; transition: all 0.3s; position: relative;
+  }
+  .tip-card:hover { transform: translateY(-4px); border-color: var(--border); }
+  .tip-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px; font-weight: 900;
+    color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,0.2);
+    position: absolute; top: 20px; right: 24px; line-height: 1;
+  }
+  .tip-icon { font-size: 28px; margin-bottom: 16px; }
+  .tip-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+  .tip-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* FAQ / GLOSSARY */
+  .faq-list { max-width: 800px; }
+  .faq-item {
+    border-bottom: 1px solid var(--border2);
+  }
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 0; cursor: none; transition: all 0.3s;
+  }
+  .faq-q:hover { color: var(--gold); }
+  .faq-q span {
+    font-size: 16px; font-weight: 500; padding-right: 20px;
+  }
+  .faq-icon {
+    font-size: 20px; color: var(--gold); flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    font-size: 14px; color: var(--muted); line-height: 1.8;
+    padding-bottom: 24px; display: none;
+  }
+  .faq-item.open .faq-a { display: block; animation: fadeIn 0.3s ease; }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    background: var(--bg2); border-top: 1px solid var(--border);
+    padding: 60px 48px 40px;
+  }
+  .footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 48px; flex-wrap: gap;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; color: var(--gold); letter-spacing: 4px;
+  }
+  .footer-logo span { color: var(--white); }
+  .footer-tagline { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+  .footer-col h4 {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    font-size: 13px; color: var(--muted);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid var(--border2); padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-bottom p { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+  /* QUOTE SECTION */
+  .quote-section {
+    background: var(--bg); text-align: center;
+    padding: 80px 48px; border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+  }
+  blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3vw, 32px);
+    font-style: italic; line-height: 1.6;
+    color: var(--white); max-width: 800px; margin: 0 auto 24px;
+  }
+  blockquote em { color: var(--gold); }
+  cite {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav ul { display: none; }
+    section { padding: 70px 24px; }
+    .hero { padding: 100px 24px 70px; }
+    .hero-stats { gap: 28px; }
+    .tracker-grid { grid-template-columns: 1fr; }
+    .footer-top { flex-direction: column; gap: 32px; }
+    .footer-links { gap: 28px; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); opacity: 0.5; }
+
+  /* HIGHLIGHT */
+  ::selection { background: var(--gold); color: var(--bg); }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Architecture Academy</h1>
-    </header>
-    <main>
-        <section>
-            <h2>About Us</h2>
-            <p>We are dedicated to providing top-notch architectural education.</p>
-        </section>
-        <section>
-            <h2>Courses Offered</h2>
-            <ul>
-                <li>Modern Architecture</li>
-                <li>Sustainable Design</li>
-                <li>Urban Planning</li>
-            </ul>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Architecture Academy</p>
-    </footer>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Archi<span>Academy</span></div>
+  <ul>
+    <li><a href="#skills">Fondasi</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#materials">Materi</a></li>
+    <li><a href="#tools">Software</a></li>
+    <li><a href="#projects">Proyek</a></li>
+    <li><a href="#tracker">Tracker</a></li>
+  </ul>
+  <div class="nav-progress" id="navProgress">MINGGU 1 / 8</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-arc"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Program Intensif Arsitektur 2026</div>
+    <h1>
+      Kuasai<br>
+      <em>Arsitektur</em><br>
+      <span class="outline">dalam 2 Bulan</span>
+    </h1>
+    <p class="hero-sub">
+      Program belajar terstruktur yang mengkompres esensi pendidikan arsitektur 5 tahun menjadi 8 minggu intensif. Dari teori dasar hingga software profesional — semua dalam satu platform.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">8</span>
+        <span class="stat-label">Minggu Intensif</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">120+</span>
+        <span class="stat-label">Jam Materi</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">24</span>
+        <span class="stat-label">Topik Utama</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">8</span>
+        <span class="stat-label">Proyek Nyata</span>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a href="#roadmap" class="btn-primary">▶ Mulai Sekarang</a>
+      <a href="#materials" class="btn-outline">→ Lihat Materi</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <blockquote>
+    "Arsitektur adalah musik yang <em>membeku</em> — ia bercerita tanpa kata, bertahan melampaui waktu."
+  </blockquote>
+  <cite>— Friedrich Schelling</cite>
+</div>
+
+<!-- SKILLS NEEDED -->
+<section id="skills">
+  <div class="section-label">Fondasi</div>
+  <h2 class="section-title">Yang Perlu Kamu <em>Kuasai</em></h2>
+  <p class="section-desc">
+    Menjadi arsitek membutuhkan kombinasi kemampuan teknis, artistik, dan analitis. Berikut area kompetensi utama yang akan kita bangun selama 2 bulan.
+  </p>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <span class="skill-icon">📐</span>
+      <h3>Gambar Teknik & Drafting</h3>
+      <p>Kemampuan membaca dan membuat denah, tampak, potongan, dan perspektif — fondasi utama komunikasi arsitektur.</p>
+      <div class="skill-level">⬛⬛⬛⬛⬜ Kritikal</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🏛️</span>
+      <h3>Sejarah & Teori Arsitektur</h3>
+      <p>Memahami evolusi dari arsitektur klasik Yunani hingga dekonstrktivisme modern sebagai referensi desain.</p>
+      <div class="skill-level">⬛⬛⬛⬜⬜ Penting</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🔩</span>
+      <h3>Sistem Struktural</h3>
+      <p>Prinsip dasar struktur bangunan: beban, gaya, material, dan bagaimana bangunan "berdiri" dengan aman.</p>
+      <div class="skill-level">⬛⬛⬛⬛⬜ Kritikal</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">💻</span>
+      <h3>Software BIM & 3D</h3>
+      <p>AutoCAD untuk 2D, SketchUp untuk konsep 3D, Revit untuk BIM, dan Lumion/Enscape untuk render.</p>
+      <div class="skill-level">⬛⬛⬛⬛⬛ Wajib</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🌱</span>
+      <h3>Desain Berkelanjutan</h3>
+      <p>Prinsip green building, efisiensi energi, material ramah lingkungan, dan sertifikasi LEED/Greenship.</p>
+      <div class="skill-level">⬛⬛⬛⬜⬜ Penting</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">📏</span>
+      <h3>Regulasi & Kode Bangunan</h3>
+      <p>IMB/PBG, GSB, KDB, KLB, zonasi, dan standar aksesibilitas yang wajib dipatuhi setiap bangunan.</p>
+      <div class="skill-level">⬛⬛⬛⬛⬜ Kritikal</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🎨</span>
+      <h3>Desain & Estetika</h3>
+      <p>Elemen desain: komposisi, proporsi, ritme, skala, warna, material, dan prinsip-prinsip estetika ruang.</p>
+      <div class="skill-level">⬛⬛⬛⬛⬛ Wajib</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🏗️</span>
+      <h3>Material & Konstruksi</h3>
+      <p>Sifat, aplikasi, dan keterbatasan beton, baja, kayu, kaca, dan material inovatif modern.</p>
+      <div class="skill-level">⬛⬛⬛⬜⬜ Penting</div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-label">8 Minggu</div>
+  <h2 class="section-title">Roadmap <em>Belajar</em></h2>
+  <p class="section-desc">
+    Setiap minggu dirancang dengan kurikulum yang terstruktur. Klik tab minggu untuk melihat detail materi, jadwal harian, dan target pencapaian.
+  </p>
+
+  <div class="week-tabs">
+    <button class="week-tab active" onclick="showWeek(1, this)">W1</button>
+    <button class="week-tab" onclick="showWeek(2, this)">W2</button>
+    <button class="week-tab" onclick="showWeek(3, this)">W3</button>
+    <button class="week-tab" onclick="showWeek(4, this)">W4</button>
+    <button class="week-tab" onclick="showWeek(5, this)">W5</button>
+    <button class="week-tab" onclick="showWeek(6, this)">W6</button>
+    <button class="week-tab" onclick="showWeek(7, this)">W7</button>
+    <button class="week-tab" onclick="showWeek(8, this)">W8</button>
+  </div>
+
+  <!-- WEEK 1 -->
+  <div class="week-content active" id="week-1">
+    <div class="week-header">
+      <div class="week-number">01</div>
+      <div class="week-info">
+        <h2><em>Fondasi</em> & Orientasi</h2>
+        <p>Minggu pertama membangun pemahaman mendasar tentang apa itu arsitektur, sejarahnya, dan alat-alat yang akan digunakan. Kamu akan mulai berpikir seperti seorang arsitek.</p>
+        <div class="week-badge">🎯 Target: Memahami prinsip dasar desain dan sejarah arsitektur dunia</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">01.1</div>
+        <h4>Pengantar Arsitektur & Profesi</h4>
+        <p>Apa yang dilakukan arsitek? Perbedaan antara arsitek, insinyur sipil, dan desainer interior. Jalur karier dan sertifikasi IAI.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">01.2</div>
+        <h4>Sejarah Arsitektur: Yunani–Romawi</h4>
+        <p>Orde Dorik, Ionik, Korintia. Kuil Parthenon, Colosseum. Pengaruh klasik pada arsitektur Barat modern.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">01.3</div>
+        <h4>Prinsip Desain: Vitruvius Triad</h4>
+        <p>Firmitas (kekuatan), Utilitas (fungsi), Venustas (keindahan) — tiga pilar desain yang bertahan 2000 tahun.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">01.4</div>
+        <h4>Pengenalan AutoCAD 2D</h4>
+        <p>Interface, perintah dasar (LINE, CIRCLE, ARC, TRIM, EXTEND), layer management, dan pengaturan units.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">01.5</div>
+        <h4>Elemen Gambar Arsitektur</h4>
+        <p>Membaca denah (floor plan), tampak (elevation), potongan (section), dan detail konstruksi — bahasa universal arsitek.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">01.6</div>
+        <h4>Sketsa & Representasi Manual</h4>
+        <p>Teknik sketsa cepat (quick sketch), perspektif 1 dan 2 titik hilang, dan presentasi ide secara visual.</p>
+        <div class="topic-tags"><span class="tag tag-practice">Latihan</span><span class="tag tag-project">Proyek</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 1 (2–3 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:80%"></div></div>
+        <div class="sch-label">Pengantar + Sejarah Yunani-Romawi (Baca + Nonton)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Selasa</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Vitruvius Triad + Latihan analisis bangunan</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:90%"></div></div>
+        <div class="sch-label">Install & Tutorial AutoCAD (3 jam intensif)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Membaca gambar teknik + latihan denah sederhana</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Jumat</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:80%"></div></div>
+        <div class="sch-label">Sketsa manual + perspektif 1 titik hilang</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:60%"></div></div>
+        <div class="sch-label">Review + Proyek Minggu 1: Sketsa rumah ideal kamu</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Minggu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:30%"></div></div>
+        <div class="sch-label">Istirahat / catch up / eksplorasi bebas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div class="week-content" id="week-2">
+    <div class="week-header">
+      <div class="week-number">02</div>
+      <div class="week-info">
+        <h2>Gambar Teknik <em>Profesional</em></h2>
+        <p>Mendalami AutoCAD secara serius dan mulai membuat gambar teknik standar profesional. Ini adalah skill terpenting yang paling sering dipakai di lapangan.</p>
+        <div class="week-badge">🎯 Target: Bisa membuat denah, tampak, dan potongan lengkap dengan AutoCAD</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">02.1</div>
+        <h4>AutoCAD Lanjutan: Dimensi & Anotasi</h4>
+        <p>DIMENSION, TEXT, MTEXT, HATCH, BLOCK, XREF — perintah-perintah yang dipakai setiap hari oleh drafter profesional.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">02.2</div>
+        <h4>Denah Arsitektur Standar</h4>
+        <p>Membuat denah lantai lengkap: dinding, pintu, jendela, tangga, furniture layout, dan anotasi dimensi.</p>
+        <div class="topic-tags"><span class="tag tag-practice">Latihan</span><span class="tag tag-project">Proyek</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">02.3</div>
+        <h4>Tampak & Potongan Bangunan</h4>
+        <p>Cara membaca dan menggambar elevation dan section yang benar, termasuk notasi material dan ketinggian bangunan.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">02.4</div>
+        <h4>Standar Gambar Indonesia (SNI)</h4>
+        <p>Standar Nasional Indonesia untuk gambar teknik bangunan — skala, garis, simbol, dan format lembar kerja.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">02.5</div>
+        <h4>Layout & Plotting di AutoCAD</h4>
+        <p>Model space vs paper space, viewport, title block, dan cara print/export gambar ke PDF berkualitas tinggi.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">02.6</div>
+        <h4>Sejarah: Gotik, Renaissance, Baroque</h4>
+        <p>Notre-Dame de Paris, Florence Cathedral, Versailles — evolusi ornamen dan teknik konstruksi abad pertengahan.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 2 (3 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin–Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">AutoCAD intensif: dimensi, anotasi, blok</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:80%"></div></div>
+        <div class="sch-label">Gambar denah rumah 60m² dari nol</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Jumat</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Gambar tampak + potongan bangunan tersebut</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:90%"></div></div>
+        <div class="sch-label">Proyek: Set gambar 2D lengkap (layout + plotting)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 3 -->
+  <div class="week-content" id="week-3">
+    <div class="week-header">
+      <div class="week-number">03</div>
+      <div class="week-info">
+        <h2>Struktur & <em>Material</em></h2>
+        <p>Memahami mengapa bangunan tidak runtuh. Belajar sistem struktur, jenis pondasi, material utama, dan prinsip konstruksi yang menjadi tulang punggung setiap bangunan.</p>
+        <div class="week-badge">🎯 Target: Mampu memilih sistem struktur yang tepat untuk berbagai jenis bangunan</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">03.1</div>
+        <h4>Mekanika Bangunan Dasar</h4>
+        <p>Gaya, momen, beban mati & hidup, beban angin & gempa. Konsep tanpa perlu kalkulus — cukup pemahaman intuitif.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">03.2</div>
+        <h4>Sistem Pondasi</h4>
+        <p>Pondasi dangkal (telapak, jalur, rakit), pondasi dalam (tiang pancang, bored pile) — kapan dan bagaimana memilihnya.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">03.3</div>
+        <h4>Struktur Atas: Kolom, Balok, Pelat</h4>
+        <p>Sistem rangka beton bertulang, baja, dan kayu. Transfer beban dari atap ke pondasi — cara bangunan bekerja.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">03.4</div>
+        <h4>Material: Beton, Baja, Kayu</h4>
+        <p>Sifat mekanis, keunggulan, kelemahan, dan aplikasi ideal setiap material. Spesifikasi standar Indonesia.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">03.5</div>
+        <h4>Atap: Jenis, Struktur & Detail</h4>
+        <p>Atap pelana, perisai, datar, green roof. Kemiringan, waterproofing, drainase, dan detail pertemuan atap-dinding.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">03.6</div>
+        <h4>Material Inovatif & Modern</h4>
+        <p>GFRC, mass timber (CLT), membrane ETFE, glass fiber reinforced concrete, dan material masa depan.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 3 (3 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Mekanika dasar + video case study bangunan runtuh</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Selasa–Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:80%"></div></div>
+        <div class="sch-label">Sistem struktur: pondasi & rangka atas</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis–Jumat</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:75%"></div></div>
+        <div class="sch-label">Material study + kunjungan toko material (offline)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:85%"></div></div>
+        <div class="sch-label">Proyek: Gambar potongan struktural dengan anotasi material</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 4 -->
+  <div class="week-content" id="week-4">
+    <div class="week-header">
+      <div class="week-number">04</div>
+      <div class="week-info">
+        <h2>SketchUp & <em>Pemodelan 3D</em></h2>
+        <p>Dari 2D ke 3D. SketchUp adalah software paling intuitif untuk modeling arsitektur dan wajib dikuasai di minggu ini. Plus pengenalan prinsip desain ruang yang baik.</p>
+        <div class="week-badge">🎯 Target: Bisa membuat model 3D bangunan 2 lantai yang presentable</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">04.1</div>
+        <h4>SketchUp: Interface & Dasar</h4>
+        <p>Tools dasar, navigasi, grup & komponen, layer, scene. Workflow efisien dari modeling hingga presentasi.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">04.2</div>
+        <h4>Modeling Massa Bangunan</h4>
+        <p>Push/pull, follow me, solid tools, dan teknik modeling massing untuk studi volumetri bangunan.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">04.3</div>
+        <h4>Prinsip Desain Ruang</h4>
+        <p>Hierarki ruang, sirkulasi, hubungan antar ruang, skala manusia, dan bubble diagram sebagai alat analisis.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">04.4</div>
+        <h4>Material & Tekstur di SketchUp</h4>
+        <p>Aplikasi material, UV mapping, menggunakan 3D Warehouse untuk furniture, dan render preview dasar.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">04.5</div>
+        <h4>Arsitektur Modern (1900–1970)</h4>
+        <p>Bauhaus, Le Corbusier, Mies van der Rohe, Frank Lloyd Wright. Manifesto modernisme dalam arsitektur.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">04.6</div>
+        <h4>Analisis Tapak (Site Analysis)</h4>
+        <p>Orientasi matahari, angin, kontur tanah, akses, sirkulasi kendaraan — prasyarat sebelum mendesain.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-project">Proyek</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 4 (3–4 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin–Selasa</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">SketchUp crash course — modeling rumah 1 lantai</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:75%"></div></div>
+        <div class="sch-label">Prinsip desain ruang + bubble diagram latihan</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis–Jumat</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:90%"></div></div>
+        <div class="sch-label">Lanjut modeling + material texturing</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">Proyek Midterm: Model 3D rumah 2 lantai + site analysis</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 5 -->
+  <div class="week-content" id="week-5">
+    <div class="week-header">
+      <div class="week-number">05</div>
+      <div class="week-info">
+        <h2>Revit BIM & <em>Dokumentasi</em></h2>
+        <p>Masuk ke dunia profesional dengan Autodesk Revit. BIM (Building Information Modeling) adalah standar industri global yang menggantikan CAD konvensional.</p>
+        <div class="week-badge">🎯 Target: Memahami konsep BIM dan bisa membuat model Revit dasar</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">05.1</div>
+        <h4>Apa itu BIM?</h4>
+        <p>Konsep Building Information Modeling, perbedaan dengan CAD, LOD (Level of Development), dan manfaat BIM dalam proyek besar.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">05.2</div>
+        <h4>Revit: Walls, Floors, Roofs</h4>
+        <p>Membuat elemen bangunan dasar di Revit dengan parameter yang benar — fondasi workflow BIM.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">05.3</div>
+        <h4>Revit: Pintu, Jendela & Famili</h4>
+        <p>Inserting dan kustomisasi family, parameter, dan membuat family sederhana sendiri.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">05.4</div>
+        <h4>Schedules & Quantity Takeoff</h4>
+        <p>Membuat jadwal pintu-jendela, list material otomatis — keunggulan BIM yang tidak bisa dilakukan CAD biasa.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">05.5</div>
+        <h4>Sistem MEP Dasar</h4>
+        <p>Plumbing, electrical, HVAC — arsitek harus bisa berkoordinasi dengan engineer MEP agar tidak bertabrakan.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">05.6</div>
+        <h4>Green Building & Sustainability</h4>
+        <p>Prinsip passive design, orientasi bangunan, cross-ventilation, shading devices, dan sertifikasi Greenship Indonesia.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-project">Proyek</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 5 (3–4 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:60%"></div></div>
+        <div class="sch-label">Teori BIM + instalasi Revit</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Selasa–Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">Revit modeling: walls, floors, roofs, doors, windows</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:75%"></div></div>
+        <div class="sch-label">Schedules + koordinasi MEP dasar</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Jumat–Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:85%"></div></div>
+        <div class="sch-label">Green building theory + proyek: analisis pasif bangunan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 6 -->
+  <div class="week-content" id="week-6">
+    <div class="week-header">
+      <div class="week-number">06</div>
+      <div class="week-info">
+        <h2>Rendering & <em>Presentasi Visual</em></h2>
+        <p>Desain yang bagus harus bisa dijual. Minggu ini belajar membuat render fotorealistik dengan Lumion/Enscape, membuat portfolio, dan teknik presentasi profesional.</p>
+        <div class="week-badge">🎯 Target: Bisa membuat presentasi visual proyek yang meyakinkan klien</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">06.1</div>
+        <h4>Lumion: Dasar Rendering</h4>
+        <p>Import model, lighting setup, material library, kamera, dan render setting untuk output berkualitas tinggi.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">06.2</div>
+        <h4>Komposisi & Pencahayaan 3D</h4>
+        <p>Rule of thirds, depth of field, HDRI lighting, golden hour, dan malam hari — teknik fotografi untuk render arsitektur.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">06.3</div>
+        <h4>Post-Processing di Photoshop</h4>
+        <p>Color grading, entourage (orang, pohon, mobil), sky replacement, dan teknik compositing untuk render final.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">06.4</div>
+        <h4>Layout Presentasi di InDesign/Figma</h4>
+        <p>Membuat panel presentasi yang profesional: hierarki visual, typography, grid system, dan warna yang konsisten.</p>
+        <div class="topic-tags"><span class="tag tag-software">Software</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">06.5</div>
+        <h4>Regulasi Bangunan Indonesia</h4>
+        <p>IMB/PBG, GSB (Garis Sempadan Bangunan), KDB, KLB, ketinggian bangunan, dan prosedur perizinan.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">06.6</div>
+        <h4>Arsitektur Kontemporer (1970–kini)</h4>
+        <p>Postmodern, Deconstructivism (Gehry, Hadid), Parametric, Biomimicry — tren arsitektur terkini.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 6 (3–4 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin–Selasa</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">Lumion rendering workshop — dari model ke render</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:80%"></div></div>
+        <div class="sch-label">Photoshop post-processing render arsitektur</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Regulasi IMB/PBG + studi kasus perizinan</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Jumat–Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:90%"></div></div>
+        <div class="sch-label">Layout presentasi + proyek: render 5 view bangunan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 7 -->
+  <div class="week-content" id="week-7">
+    <div class="week-header">
+      <div class="week-number">07</div>
+      <div class="week-info">
+        <h2>Proses Desain & <em>Metodologi</em></h2>
+        <p>Belajar cara berpikir seperti arsitek. Dari brief klien hingga konsep desain, design thinking, dan presentasi kepada klien nyata.</p>
+        <div class="week-badge">🎯 Target: Mampu menjalankan proses desain arsitektur dari brief hingga presentasi</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">07.1</div>
+        <h4>Design Thinking dalam Arsitektur</h4>
+        <p>Empathize, Define, Ideate, Prototype, Test — metodologi inovasi yang diadaptasi untuk desain bangunan.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">07.2</div>
+        <h4>Program Ruang & Brief Klien</h4>
+        <p>Cara membaca brief klien, membuat program ruang (space program), dan menerjemahkan kebutuhan menjadi konsep desain.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">07.3</div>
+        <h4>Konsep Desain & Narasi</h4>
+        <p>Mengembangkan konsep yang kuat, membuat design statement, dan menciptakan narasi yang menjadi benang merah desain.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-project">Proyek</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">07.4</div>
+        <h4>Estimasi Biaya Dasar (RAB)</h4>
+        <p>Rencana Anggaran Biaya — cara menghitung volume pekerjaan, harga satuan, dan total biaya konstruksi secara kasar.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">07.5</div>
+        <h4>Kontrak & Etika Profesi</h4>
+        <p>Jenis kontrak arsitek-klien, fee arsitek, dokumen kontrak dasar, hak cipta desain, dan kode etik IAI.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">07.6</div>
+        <h4>Arsitektur Nusantara</h         >
+        <p>Rumah Gadang, Joglo, Rumah Adat Toraja, Bali Style — kekayaan arsitektur vernakular Indonesia sebagai inspirasi.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 7 (3–4 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Design thinking workshop + latihan brief klien</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Selasa–Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:85%"></div></div>
+        <div class="sch-label">Program ruang + konsep desain final project</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:60%"></div></div>
+        <div class="sch-label">RAB dasar + kontrak & etika profesi</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Jumat–Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">Mulai final project: dari konsep ke desain</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 8 -->
+  <div class="week-content" id="week-8">
+    <div class="week-header">
+      <div class="week-number">08</div>
+      <div class="week-info">
+        <h2>Final Project & <em>Portfolio</em></h2>
+        <p>Minggu terakhir: selesaikan proyek final, susun portfolio profesional, dan rencanakan langkah selanjutnya dalam karier arsitektur. Waktu membuktikan diri!</p>
+        <div class="week-badge">🎯 Target: Portfolio siap pakai + proyek final arsitektur yang komprehensif</div>
+      </div>
+    </div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-num">08.1</div>
+        <h4>Finalisasi Final Project</h4>
+        <p>Polishing gambar teknik 2D (AutoCAD), model 3D (SketchUp/Revit), render final (Lumion), dan panel presentasi.</p>
+        <div class="topic-tags"><span class="tag tag-project">Proyek</span><span class="tag tag-software">Software</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">08.2</div>
+        <h4>Menyusun Portfolio Arsitektur</h4>
+        <p>Kurasio karya terbaik, urutan presentasi, cover, deskripsi proyek, dan format portfolio digital vs cetak.</p>
+        <div class="topic-tags"><span class="tag tag-project">Proyek</span><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">08.3</div>
+        <h4>Presentasi Desain (Oral)</h4>
+        <p>Cara mempresentasikan desain kepada klien dan juri: narasi, body language, menjawab pertanyaan kritis.</p>
+        <div class="topic-tags"><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">08.4</div>
+        <h4>Jalur Sertifikasi IAI</h4>
+        <p>Persyaratan Arsitek Madya, Arsitek Utama — jam praktik, ujian kompetensi, dan registrasi LPJKN.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">08.5</div>
+        <h4>Membangun Personal Brand</h4>
+        <p>Instagram arsitektur, Behance, LinkedIn, dan cara membangun reputasi online sebagai arsitek pemula.</p>
+        <div class="topic-tags"><span class="tag tag-practice">Latihan</span></div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">08.6</div>
+        <h4>Next Steps: Jalur Lanjutan</h4>
+        <p>Magang di firma arsitektur, S1 Arsitektur, freelance, parametric design (Grasshopper), dan spesialisasi.</p>
+        <div class="topic-tags"><span class="tag tag-theory">Teori</span></div>
+      </div>
+    </div>
+    <div class="daily-schedule">
+      <h3>⏱ Jadwal Harian — Minggu 8 (4–5 Jam/Hari)</h3>
+      <div class="schedule-row">
+        <div class="sch-time">Senin–Rabu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:100%"></div></div>
+        <div class="sch-label">FULL SPRINT: selesaikan semua gambar & render final</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Kamis</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:85%"></div></div>
+        <div class="sch-label">Susun portfolio + persiapan presentasi</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Jumat</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:70%"></div></div>
+        <div class="sch-label">Presentasi final project (rekam video atau ke komunitas)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="sch-time">Sabtu</div>
+        <div class="sch-bar"><div class="sch-fill" style="width:60%"></div></div>
+        <div class="sch-label">Refleksi + rencana 6 bulan ke depan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<section id="materials">
+  <div class="section-label">Referensi</div>
+  <h2 class="section-title">Materi & <em>Sumber Belajar</em></h2>
+  <p class="section-desc">
+    Dikurasi dari sumber terpercaya global. Semua buku wajib tersedia di Google Books/Scribd, semua YouTube gratis.
+  </p>
+
+  <div class="materials-tabs">
+    <button class="mat-tab active" onclick="showMat('books', this)">📚 Buku Wajib</button>
+    <button class="mat-tab" onclick="showMat('youtube', this)">▶ YouTube</button>
+    <button class="mat-tab" onclick="showMat('courses', this)">🎓 Online Course</button>
+    <button class="mat-tab" onclick="showMat('websites', this)">🌐 Website</button>
+  </div>
+
+  <div class="mat-content active resource-grid" id="mat-books">
+    <div class="resource-card">
+      <div class="resource-type">📚 Buku Teori</div>
+      <h4>A History of Architecture</h4>
+      <div class="author">Spiro Kostof</div>
+      <p>Referensi sejarah arsitektur paling komprehensif. Dari prasejarah hingga abad 20 dengan analisis mendalam dan ribuan gambar.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Wajib — Minggu 1–2</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">📚 Buku Desain</div>
+      <h4>Architecture: Form, Space & Order</h4>
+      <div class="author">Francis D.K. Ching</div>
+      <p>Injil desain arsitektur. Prinsip-prinsip dasar dengan ilustrasi yang kaya. Wajib dimiliki setiap arsitek di dunia.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Wajib — Minggu 1–4</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">📚 Buku Teknis</div>
+      <h4>Building Construction Illustrated</h4>
+      <div class="author">Francis D.K. Ching & Cassandra Adams</div>
+      <p>Gambar-gambar teknis detail konstruksi yang sangat jelas. Cara terbaik belajar sistem bangunan secara visual.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Wajib — Minggu 3</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">📚 Buku Struktur</div>
+      <h4>Why Buildings Stand Up</h4>
+      <div class="author">Mario Salvadori</div>
+      <p>Penjelasan struktur bangunan paling mudah dicerna. Tanpa matematika berat — cocok untuk pemula yang ingin memahami intuisi struktural.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Wajib — Minggu 3</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">📚 Buku Lokal</div>
+      <h4>Pengantar Arsitektur</h4>
+      <div class="author">James C. Snyder & Anthony J. Catanese (Terjemahan)</div>
+      <p>Versi bahasa Indonesia yang accessible. Mencakup semua aspek dasar profesi arsitektur dari perspektif praktis.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Referensi — Sepanjang program</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">📚 Buku Konsep</div>
+      <h4>Complexity and Contradiction in Architecture</h4>
+      <div class="author">Robert Venturi</div>
+      <p>Manifesto postmodern yang menantang dogma modernisme. Membuka wawasan tentang kerumitan dan ambiguitas dalam desain.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Pengayaan — Minggu 6–7</span></div>
+    </div>
+  </div>
+
+  <div class="mat-content resource-grid" id="mat-youtube">
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">▶ YouTube Channel</div>
+      <h4>30X40 Design Workshop</h4>
+      <div class="author">youtube.com/@30by40</div>
+      <p>Arsitek profesional Eric Reinholdt berbagi proses desain nyata, bisnis freelance, dan life as an architect. Salah satu channel terbaik di dunia.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>170K+ subscriber</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">▶ YouTube Channel</div>
+      <h4>The B1M</h4>
+      <div class="author">youtube.com/@TheB1M</div>
+      <p>Dokumenter bangunan spektakuler di seluruh dunia. Cara paling menyenangkan belajar arsitektur kontemporer dan konstruksi modern.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>3M+ subscriber</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">▶ YouTube Channel</div>
+      <h4>Architectural Digest</h4>
+      <div class="author">youtube.com/@archdigest</div>
+      <p>Tur eksklusif rumah arsitek dan selebriti dunia. Inspirasi material, interior, dan estetika kontemporer yang tak ada habisnya.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>4M+ subscriber</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">▶ Tutorial AutoCAD</div>
+      <h4>Wahid Tutorials (Channel Indonesia)</h4>
+      <div class="author">AutoCAD bahasa Indonesia</div>
+      <p>Tutorial AutoCAD dalam bahasa Indonesia yang sangat lengkap untuk pemula. Dari dasar hingga tingkat lanjut.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Minggu 1–2</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">▶ Tutorial SketchUp</div>
+      <h4>SketchUp School</h4>
+      <div class="author">youtube.com/@sketchupschool</div>
+      <p>Kursus SketchUp paling sistematis di YouTube. Dari dasar hingga advanced teknik dengan proyek nyata.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Minggu 4</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">▶ Channel Indonesia</div>
+      <h4>Arsitur Studio</h4>
+      <div class="author">Channel arsitektur Indonesia terpercaya</div>
+      <p>Tutorial AutoCAD, SketchUp, Revit, dan konten arsitektur dalam bahasa Indonesia. Sangat relevan untuk konteks lokal.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Sepanjang program</span></div>
+    </div>
+  </div>
+
+  <div class="mat-content resource-grid" id="mat-courses">
+    <div class="resource-card">
+      <div class="resource-type">🎓 Platform Online</div>
+      <h4>Architectural Design Certificate</h4>
+      <div class="author">Harvard GSD Online / edX</div>
+      <p>Kursus resmi Harvard Graduate School of Design. Materi berkualitas akademis dengan instruktur terbaik dunia.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Audit gratis tersedia</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🎓 Platform Online</div>
+      <h4>Introduction to Sustainable Architecture</h4>
+      <div class="author">Coursera / TU Delft</div>
+      <p>Kursus green building dari Universitas teknik terkemuka Eropa, TU Delft. Audit gratis dengan sertifikat berbayar.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Minggu 5</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">🎓 Video Course</div>
+      <h4>Complete AutoCAD 2024 Course</h4>
+      <div class="author">Udemy — harga promo</div>
+      <p>Kursus AutoCAD paling lengkap di Udemy dengan lebih dari 30 jam video. Sering diskon hingga 90%.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Minggu 1–2</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">🎓 Video Course</div>
+      <h4>Revit BIM Fundamentals</h4>
+      <div class="author">Autodesk Learning / LinkedIn Learning</div>
+      <p>Kursus resmi Autodesk untuk Revit. Tersedia di LinkedIn Learning yang bisa diakses dengan akun gratis 1 bulan trial.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Minggu 5</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🎓 Platform Lokal</div>
+      <h4>Kursus Arsitektur — Skill Academy</h4>
+      <div class="author">Ruangguru / Skill Academy Indonesia</div>
+      <p>Platform Indonesia dengan kursus AutoCAD, SketchUp dalam bahasa Indonesia. Bisa digunakan Kartu Prakerja.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Sepanjang program</span></div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type">🎓 Workshop</div>
+      <h4>Arsitektur & Interior Workshop</h4>
+      <div class="author">IAI (Ikatan Arsitek Indonesia)</div>
+      <p>Workshop dan seminar resmi dari organisasi arsitek Indonesia. Networking + sertifikat pengembangan profesi.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Minggu 7–8</span></div>
+    </div>
+  </div>
+
+  <div class="mat-content resource-grid" id="mat-websites">
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🌐 Database Arsitektur</div>
+      <h4>ArchDaily</h4>
+      <div class="author">archdaily.com</div>
+      <p>Website arsitektur terbesar di dunia. Ribuan proyek dari seluruh dunia dengan gambar teknis, foto, dan deskripsi lengkap.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Wajib dikunjungi harian</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🌐 Majalah Arsitektur</div>
+      <h4>Dezeen</h4>
+      <div class="author">dezeen.com</div>
+      <p>Tren arsitektur dan desain kontemporer paling terkini. Berita dan proyek yang baru diselesaikan dari studio terbaik dunia.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Inspirasi harian</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🌐 Database Gambar</div>
+      <h4>Divisare</h4>
+      <div class="author">divisare.com</div>
+      <p>Arsip fotografi arsitektur berkualitas tertinggi. Untuk mencari referensi visual dan mempelajari representasi proyek profesional.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Referensi visual</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🌐 Komunitas Indonesia</div>
+      <h4>Archicentre Indonesia</h4>
+      <div class="author">iai.or.id</div>
+      <p>Website resmi Ikatan Arsitek Indonesia. Berita profesi, regulasi terbaru, dan akses ke jaringan arsitek Indonesia.</p>
+      <div class="resource-rating"><span class="stars">★★★★☆</span><span>Regulasi & profesi</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🌐 Tools Online</div>
+      <h4>Floorplanner</h4>
+      <div class="author">floorplanner.com</div>
+      <p>Tools denah online gratis untuk latihan cepat tanpa harus install AutoCAD. Ideal untuk eksplorasi layout ruang.</p>
+      <div class="resource-rating"><span class="stars">★★★☆☆</span><span>Latihan & eksplorasi</span></div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-free">GRATIS</span>
+      <div class="resource-type">🌐 3D Model Library</div>
+      <h4>3D Warehouse SketchUp</h4>
+      <div class="author">3dwarehouse.sketchup.com</div>
+      <p>Jutaan model 3D gratis untuk didownload dan digunakan dalam proyek SketchUp. Furniture, pohon, kendaraan, dan bangunan.</p>
+      <div class="resource-rating"><span class="stars">★★★★★</span><span>Wajib untuk SketchUp</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="section-label">Software</div>
+  <h2 class="section-title">Toolkit <em>Arsitek</em></h2>
+  <p class="section-desc">
+    Software yang wajib dan penting dikuasai. Urutan belajar dirancang untuk progressif — dari sederhana ke kompleks.
+  </p>
+  <div class="tools-grid reveal">
+    <div class="tool-card">
+      <span class="tool-icon">📐</span>
+      <h3>AutoCAD</h3>
+      <p>Standar industri untuk gambar 2D teknik. Wajib dikuasai sebelum software lain apapun.</p>
+      <span class="tool-priority priority-essential">Essential</span>
+      <div class="tool-weeks">Minggu 1–2 (intensif)</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">🏠</span>
+      <h3>SketchUp</h3>
+      <p>Paling intuitif untuk massing 3D dan presentasi konsep. Dipakai arsitek dari pemula hingga senior.</p>
+      <span class="tool-priority priority-essential">Essential</span>
+      <div class="tool-weeks">Minggu 4 (intensif)</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">🏗️</span>
+      <h3>Autodesk Revit</h3>
+      <p>Standar BIM global. Wajib untuk proyek menengah-besar dan firma arsitektur profesional.</p>
+      <span class="tool-priority priority-essential">Essential</span>
+      <div class="tool-weeks">Minggu 5 (dasar)</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">🌟</span>
+      <h3>Lumion</h3>
+      <p>Render real-time paling populer. Mengubah model 3D menjadi visual fotorealistik dalam menit.</p>
+      <span class="tool-priority priority-important">Penting</span>
+      <div class="tool-weeks">Minggu 6</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">🎨</span>
+      <h3>Adobe Photoshop</h3>
+      <p>Post-processing render, compositing, dan pembuatan panel presentasi. Skill visual yang selalu relevan.</p>
+      <span class="tool-priority priority-important">Penting</span>
+      <div class="tool-weeks">Minggu 6</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">📄</span>
+      <h3>Adobe InDesign / Figma</h3>
+      <p>Layout portfolio dan panel presentasi. Mengubah kumpulan gambar menjadi presentasi yang meyakinkan.</p>
+      <span class="tool-priority priority-important">Penting</span>
+      <div class="tool-weeks">Minggu 6–8</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">🔮</span>
+      <h3>Enscape</h3>
+      <p>Plugin render real-time untuk Revit dan SketchUp. Alternatif Lumion yang semakin populer.</p>
+      <span class="tool-priority priority-optional">Opsional</span>
+      <div class="tool-weeks">Jika ada waktu</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">🌐</span>
+      <h3>Rhino + Grasshopper</h3>
+      <p>Parametric design untuk bentuk-bentuk kompleks. Dipakai studio top seperti Zaha Hadid Architects.</p>
+      <span class="tool-priority priority-optional">Bonus</span>
+      <div class="tool-weeks">Setelah program</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Portfolio Building</div>
+  <h2 class="section-title">8 Proyek <em>Nyata</em></h2>
+  <p class="section-desc">
+    Setiap minggu ada satu deliverable konkret. Di akhir program, kamu memiliki 8 karya untuk portofolio.
+  </p>
+  <div class="projects-timeline reveal">
+    <div class="project-item">
+      <div class="project-week">Minggu 1</div>
+      <div class="project-card">
+        <h3>Sketsa <em>Rumah Impian</em></h3>
+        <p>Buat sketsa manual rumah idealmu dari perspektif eksterior dan satu ruang interior. Fokus pada komposisi, proporsi, dan komunikasi visual.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">5 Lembar Sketsa</span>
+          <span class="deliverable">Perspektif Eksterior</span>
+          <span class="deliverable">Sketsa Interior</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+          </div>
+          <span class="diff-label">Pemula</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 2</div>
+      <div class="project-card">
+        <h3>Set Gambar 2D <em>Rumah Tipe 60</em></h3>
+        <p>Gambar teknis lengkap rumah 60m² menggunakan AutoCAD: denah, 2 tampak, 1 potongan, dan detail pintu-jendela. Sesuai standar SNI.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">Denah 1:100</span>
+          <span class="deliverable">Tampak Depan & Samping</span>
+          <span class="deliverable">Potongan A-A</span>
+          <span class="deliverable">File PDF</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+          </div>
+          <span class="diff-label">Dasar</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 3</div>
+      <div class="project-card">
+        <h3>Potongan Struktural <em>dengan Anotasi</em></h3>
+        <p>Gambar potongan memanjang dan melintang yang menunjukkan sistem struktur lengkap: pondasi, kolom, balok, pelat, atap beserta spesifikasi material.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">Potongan Struktural</span>
+          <span class="deliverable">Anotasi Material</span>
+          <span class="deliverable">Detail Pondasi</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+          </div>
+          <span class="diff-label">Menengah</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 4 — Midterm</div>
+      <div class="project-card">
+        <h3>Model 3D <em>Rumah 2 Lantai</em> + Site Analysis</h3>
+        <p>Model SketchUp lengkap rumah 2 lantai 120m² dengan furniture, material, dan landscaping dasar. Dilengkapi site analysis (orientasi matahari, angin).</p>
+        <div class="project-deliverables">
+          <span class="deliverable">Model SketchUp</span>
+          <span class="deliverable">5 View Screenshot</span>
+          <span class="deliverable">Site Analysis Diagram</span>
+          <span class="deliverable">Bubble Diagram</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot empty"></div>
+            <div class="diff-dot empty"></div>
+          </div>
+          <span class="diff-label">Menengah</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 5</div>
+      <div class="project-card">
+        <h3>Model Revit BIM <em>+ Analisis Pasif</em></h3>
+        <p>Bangun model Revit dari gambar AutoCAD yang sudah dibuat. Tambahkan analisis passive design: orientasi, shading, bukaan ventilasi.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">Model Revit .rvt</span>
+          <span class="deliverable">Door/Window Schedule</span>
+          <span class="deliverable">Diagram Passive Design</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot empty"></div>
+          </div>
+          <span class="diff-label">Menantang</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 6</div>
+      <div class="project-card">
+        <h3>Render Fotorealistik <em>5 View</em></h3>
+        <p>Render Lumion berkualitas tinggi: eksterior depan, eksterior samping, taman, ruang tamu, dan kamar utama. Post-processing di Photoshop.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">5 Render Final</span>
+          <span class="deliverable">Resolusi 3840×2160</span>
+          <span class="deliverable">Post-processed</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot empty"></div>
+          </div>
+          <span class="diff-label">Menantang</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 7</div>
+      <div class="project-card">
+        <h3>Design Brief Response — <em>Proyek Komunitas</em></h3>
+        <p>Desain fasilitas komunitas kecil (300m²) berdasarkan brief yang diberikan: perpustakaan mini, coworking space, atau community center. Proses lengkap dari analisis hingga konsep.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">Analisis Tapak</span>
+          <span class="deliverable">Konsep Statement</span>
+          <span class="deliverable">Denah Skematik</span>
+          <span class="deliverable">3D Massing</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+          </div>
+          <span class="diff-label">Advanced</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-item">
+      <div class="project-week">Minggu 8 — Final Project</div>
+      <div class="project-card">
+        <h3><em>Portofolio</em> + Proyek Final Terintegrasi</h3>
+        <p>Presentasi lengkap proyek desain terbaik kamu dalam format portfolio profesional: konsep, gambar teknis 2D, model 3D, render, RAB estimasi, dan narasi desain.</p>
+        <div class="project-deliverables">
+          <span class="deliverable">Portfolio PDF (20+ hal)</span>
+          <span class="deliverable">Set Gambar 2D</span>
+          <span class="deliverable">Model 3D</span>
+          <span class="deliverable">5+ Render</span>
+          <span class="deliverable">Presentasi Lisan</span>
+        </div>
+        <div class="project-difficulty">
+          <div class="diff-bar">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+          </div>
+          <span class="diff-label">Profesional</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACKER -->
+<section id="tracker">
+  <div class="section-label">Progress</div>
+  <h2 class="section-title">Lacak <em>Perkembanganmu</em></h2>
+  <p class="section-desc">Centang topik yang sudah kamu selesaikan. Progress disimpan di browser kamu.</p>
+  <div class="tracker-grid">
+    <div class="tracker-left">
+      <h3 style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;">📊 Progress Penguasaan</h3>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">Teori & Sejarah</span>
+          <span class="progress-pct" id="pct-teori">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-teori" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">Gambar Teknik (AutoCAD)</span>
+          <span class="progress-pct" id="pct-cad">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-cad" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">Struktur & Material</span>
+          <span class="progress-pct" id="pct-struktur">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-struktur" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">3D Modeling (SketchUp)</span>
+          <span class="progress-pct" id="pct-3d">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-3d" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">BIM (Revit)</span>
+          <span class="progress-pct" id="pct-bim">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-bim" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">Rendering & Presentasi</span>
+          <span class="progress-pct" id="pct-render">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-render" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">Desain & Metodologi</span>
+          <span class="progress-pct" id="pct-desain">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-desain" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="tracker-right">
+      <div class="checklist-section">
+        <h3>✅ Milestone Checklist</h3>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="teori">
+          <div class="check-box">✓</div>
+          <div class="check-text">Selesai baca Francis Ching — Architecture: Form, Space & Order</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="cad">
+          <div class="check-box">✓</div>
+          <div class="check-text">Install AutoCAD + selesaikan tutorial dasar</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="cad">
+          <div class="check-box">✓</div>
+          <div class="check-text">Gambar denah rumah pertamaku di AutoCAD</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="teori">
+          <div class="check-box">✓</div>
+          <div class="check-text">Buat sketch manual 5 halaman</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="struktur">
+          <div class="check-box">✓</div>
+          <div class="check-text">Pahami sistem struktur rangka beton bertulang</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="3d">
+          <div class="check-box">✓</div>
+          <div class="check-text">Install SketchUp + model bangunan pertama</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="3d">
+          <div class="check-box">✓</div>
+          <div class="check-text">Selesai Midterm Project (rumah 2 lantai)</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="bim">
+          <div class="check-box">✓</div>
+          <div class="check-text">Pahami konsep BIM dan selesaikan model Revit dasar</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="render">
+          <div class="check-box">✓</div>
+          <div class="check-text">Buat render Lumion pertama (eksterior)</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="desain">
+          <div class="check-box">✓</div>
+          <div class="check-text">Selesai proyek fasilitas komunitas</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="render">
+          <div class="check-box">✓</div>
+          <div class="check-text">Portfolio selesai (min. 5 proyek)</div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)" data-cat="desain">
+          <div class="check-box">✓</div>
+          <div class="check-text">🏆 Final Project dipresentasikan!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section id="tips">
+  <div class="section-label">Pro Tips</div>
+  <h2 class="section-title">Rahasia Belajar <em>Efektif</em></h2>
+  <p class="section-desc">
+    Dari pengalaman arsitek berpengalaman dan riset tentang accelerated learning.
+  </p>
+  <div class="tips-grid reveal">
+    <div class="tip-card">
+      <div class="tip-num">01</div>
+      <div class="tip-icon">👁️</div>
+      <h3>Lihat Bangunan Seperti Arsitek</h3>
+      <p>Setiap kali masuk gedung, tanyakan: apa sistem strukturnya? Material apa yang dipakai? Sirkulasinya seperti apa? Indera kritismu adalah laboratorium terbaik.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">02</div>
+      <div class="tip-icon">✏️</div>
+      <h3>Sketsa Setiap Hari — 10 Menit</h3>
+      <p>Seorang arsitek yang tidak pernah berhenti menggambar akan jauh lebih baik dari yang hanya belajar software. Bawa sketchbook kecil ke mana saja.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">03</div>
+      <div class="tip-icon">🗂️</div>
+      <h3>Kumpulkan Referensi Secara Sistematis</h3>
+      <p>Buat folder Pinterest atau Notion khusus arsitektur dengan kategori: material, detail konstruksi, denah inspiratif, eksterior, interior. Referensi adalah kekuatan arsitek.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">04</div>
+      <div class="tip-icon">🏃</div>
+      <h3>Proyek Nyata Lebih Baik dari Tutorial</h3>
+      <p>Setelah menguasai dasar software, langsung kerjakan proyek nyata (rumah saudaramu, kos-kosan tetangga). Tantangan nyata mempercepat pembelajaran 10x.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">05</div>
+      <div class="tip-icon">🤝</div>
+      <h3>Bergabung Komunitas Arsitek</h3>
+      <p>Grup Telegram/Discord arsitek Indonesia, forum ArchDaily, komunitas Revit Indonesia. Networking adalah investasi jangka panjang yang sering diabaikan pemula.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">06</div>
+      <div class="tip-icon">📱</div>
+      <h3>Follow Akun Arsitektur yang Tepat</h3>
+      <p>Instagram: @archdaily, @dezeen, @bjarkeingels, @zahahadid. Biarkan feed-mu menjadi inspirasi arsitektur 24 jam. Serap estetika bagus secara tidak sadar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--bg)">
+  <div class="section-label">FAQ</div>
+  <h2 class="section-title">Pertanyaan <em>Umum</em></h2>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Apakah saya bisa menjadi arsitek profesional dalam 2 bulan?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">2 bulan ini memberikanmu fondasi kuat dan skill praktis yang cukup untuk mulai bekerja sebagai junior drafter atau junior arsitek. Untuk menjadi Arsitek berlisensi penuh (IAI), kamu masih membutuhkan pendidikan formal S1 Arsitektur dan jam praktik. Namun, program ini bisa memberimu keunggulan besar — kamu bisa mulai freelance, magang, atau mempersiapkan diri untuk kuliah arsitektur.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Berapa jam belajar yang dibutuhkan per hari?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Minimum 2–3 jam per hari di hari kerja, dan 3–5 jam di akhir pekan untuk proyek. Total sekitar 15–20 jam per minggu atau 120–160 jam dalam 8 minggu. Konsistensi lebih penting dari intensitas. Lebih baik 2 jam setiap hari daripada 14 jam setiap Sabtu.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Software apa yang harus saya install pertama?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Urutan yang benar: (1) AutoCAD — bisa download student/trial dari Autodesk, (2) SketchUp Free — versi web gratis di app.sketchup.com, (3) Revit — student license gratis dari Autodesk Education, (4) Lumion — trial 14 hari cukup untuk belajar dasar. Jangan install semua sekaligus — ikuti urutan minggu per minggu.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Spesifikasi komputer apa yang diperlukan?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Minimum: Processor Intel Core i5 gen 10+ atau AMD Ryzen 5, RAM 16GB, GPU NVIDIA GTX 1060 atau lebih, SSD 256GB. Untuk Lumion dan Revit, semakin tinggi spesifikasi semakin baik. Jika belum punya laptop memadai, SketchUp Web bisa dipakai di browser untuk sementara, dan beberapa kampus/lab memiliki workstation yang bisa dipinjam.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Apakah perlu background matematika atau seni?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Tidak harus ahli di keduanya. Matematika yang dibutuhkan hanya aritmetika dasar dan pemahaman geometri (tidak ada kalkulus). Untuk seni, kemampuan sketsa bisa dilatih — bahkan arsitek seperti Le Corbusier memulai dengan latihan intensif. Yang paling penting adalah keingintahuan tinggi, kemampuan berpikir spasial, dan kemauan untuk terus belajar.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Bagaimana cara mendapatkan proyek pertama saya?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Mulai dari lingkaran terdekat: keluarga, tetangga, teman yang mau renovasi atau bangun rumah. Tawarkan harga sangat terjangkau (atau gratis) untuk proyek pertama — tujuannya mendapat pengalaman dan portofolio. Setelah ada 2–3 proyek, buat Instagram/Behance dengan karya terbaik. Bergabung dengan platform freelance seperti 99designs, Sribulancer, atau Fiverr untuk mendapat klien global.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE 2 -->
+<div class="quote-section">
+  <blockquote>
+    "Kita membentuk bangunan kita; sesudahnya, <em>bangunan itu yang membentuk kita.</em>"
+  </blockquote>
+  <cite>— Winston Churchill</cite>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Archi<span>Academy</span></div>
+      <div class="footer-tagline">Kuasai Arsitektur dalam 8 Minggu Intensif</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Program</h4>
+        <ul>
+          <li><a href="#skills">Fondasi</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#materials">Materi</a></li>
+          <li><a href="#projects">Proyek</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Referensi</h4>
+        <ul>
+          <li><a href="https://archdaily.com" target="_blank">ArchDaily</a></li>
+          <li><a href="https://dezeen.com" target="_blank">Dezeen</a></li>
+          <li><a href="https://iai.or.id" target="_blank">IAI Indonesia</a></li>
+          <li><a href="https://autodesk.com" target="_blank">Autodesk</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="#tools">AutoCAD</a></li>
+          <li><a href="#tools">SketchUp</a></li>
+          <li><a href="#tools">Revit BIM</a></li>
+          <li><a href="#tools">Lumion</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 ArchiAcademy — Program Belajar Mandiri Arsitektur</p>
+    <p>Dibuat dengan ❤️ untuk calon arsitek Indonesia</p>
+  </div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 5 + 'px';
+    cursor.style.top = e.clientY - 5 + 'px';
+    ring.style.left = e.clientX - 18 + 'px';
+    ring.style.top = e.clientY - 18 + 'px';
+  });
+
+  // WEEK TABS
+  function showWeek(n, btn) {
+    document.querySelectorAll('.week-content').forEach(w => w.classList.remove('active'));
+    document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('week-' + n).classList.add('active');
+    btn.classList.add('active');
+    document.getElementById('navProgress').textContent = 'MINGGU ' + n + ' / 8';
+  }
+
+  // MATERIAL TABS
+  function showMat(id, btn) {
+    document.querySelectorAll('.mat-content').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.mat-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('mat-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // FAQ
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    item.classList.toggle('open');
+  }
+
+  // CHECKLIST + PROGRESS
+  const catMap = {
+    teori: ['teori'], cad: ['cad'], struktur: ['struktur'],
+    '3d': ['3d'], bim: ['bim'], render: ['render'], desain: ['desain']
+  };
+
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    updateProgress();
+    saveProgress();
+  }
+
+  function updateProgress() {
+    const cats = ['teori', 'cad', 'struktur', '3d', 'bim', 'render', 'desain'];
+    cats.forEach(cat => {
+      const items = document.querySelectorAll('[data-cat="' + cat + '"]');
+      const done = document.querySelectorAll('[data-cat="' + cat + '"].done');
+      const pct = items.length ? Math.round((done.length / items.length) * 100) : 0;
+      const barEl = document.getElementById('bar-' + cat);
+      const pctEl = document.getElementById('pct-' + cat);
+      if (barEl) barEl.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = pct + '%';
+    });
+  }
+
+  function saveProgress() {
+    const items = document.querySelectorAll('.checklist-item');
+    const state = Array.from(items).map(i => i.classList.contains('done'));
+    localStorage.setItem('archi-progress', JSON.stringify(state));
+  }
+
+  function loadProgress() {
+    const saved = localStorage.getItem('archi-progress');
+    if (!saved) return;
+    const state = JSON.parse(saved);
+    const items = document.querySelectorAll('.checklist-item');
+    items.forEach((item, i) => {
+      if (state[i]) item.classList.add('done');
+    });
+    updateProgress();
+  }
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // PROGRESS BARS ANIMATION
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        updateProgress();
+      }
+    });
+  });
+  const trackerSection = document.getElementById('tracker');
+  if (trackerSection) barObserver.observe(trackerSection);
+
+  // INIT
+  loadProgress();
+</script>
 </body>
 </html>
